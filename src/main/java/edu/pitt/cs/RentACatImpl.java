@@ -18,8 +18,15 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public boolean returnCat(int id) {
-		// TODO
-		return false;
+		// cat with passed-in cat id does not exist
+		Cat c = getCat(id);
+		if(c == null || catAvailable(id)) {
+			return false;
+		}
+
+		// cat with id exists and is rented out (not available)
+		c.returnCat();
+		return true;
 	}
 
 	/**
@@ -33,8 +40,11 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public boolean rentCat(int id) {
-		// TODO
-		return false;
+		if (!catAvailable(id)) {
+			return false;
+		}
+		getCat(id).rentCat();
+		return true;
 	}
 
 	/**
@@ -48,8 +58,12 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public String listCats() {
-		// TODO
-		return "WRITE CODE FOR THIS";
+		String s = "";
+		for (Cat c: cats) {
+			if (catAvailable(c.getId()))
+				s += c.toString() + "\n";
+		}
+		return s;
 	}
 
 	/**
@@ -62,7 +76,14 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public boolean catExists(int id) {
-		// TODO
+		// Loop through every cat in the cat list
+		for (Cat c : cats) {
+			// If cat id matches to id, cat exists (return true)
+			if (c.getId() == id)
+				return true;
+		}
+		
+		// Cat does not exist if loop completed
 		return false;
 	}
 
